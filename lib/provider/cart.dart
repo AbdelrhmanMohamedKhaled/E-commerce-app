@@ -5,13 +5,13 @@ class Cart with ChangeNotifier {
   List selectedProducts = [];
   int price = 0;
 
-  add(Product product){
+  add(Product product) {
     selectedProducts.add(product);
     price += product.price.round();
     notifyListeners();
   }
 
-  delet(Product product){
+  delet(Product product) {
     selectedProducts.remove(product);
     price -= product.price.round();
     notifyListeners();

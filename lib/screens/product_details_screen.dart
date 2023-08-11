@@ -2,6 +2,11 @@ import 'package:ecommerce_app/models/products.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecommerce_app/widgets/app_bar_components.dart';
+import 'package:provider/provider.dart';
+
+import '../models/products_model.dart';
+import '../services/product_api.dart';
+import '../viewModels/List_of_Products_model.dart';
 
 class ProductDetails extends StatefulWidget {
   final Product products;
@@ -16,6 +21,11 @@ class _ProductDetailsState extends State<ProductDetails> {
   bool isShowMore = true;
   @override
   Widget build(BuildContext context) {
+    final ProductsListViewModel productIn =
+        Provider.of<ProductsListViewModel>(context);
+    final Productss productss = Productss(products: products);
+    final ProductApi productApi = Provider.of<ProductApi>(context);
+
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
