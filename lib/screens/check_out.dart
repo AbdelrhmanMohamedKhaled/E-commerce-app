@@ -4,12 +4,18 @@ import 'package:provider/provider.dart';
 import '../provider/cart.dart';
 import 'package:ecommerce_app/widgets/app_bar_components.dart';
 
+import '../viewModels/List_of_Products_model.dart';
+
 class CheckoutScreen extends StatelessWidget {
-  const CheckoutScreen({super.key});
+  const CheckoutScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final cartInstance = Provider.of<Cart>(context);
+    final ProductsListViewModel productIn =
+        Provider.of<ProductsListViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -19,7 +25,10 @@ class CheckoutScreen extends StatelessWidget {
         actions: const [
           AppBarComponents(),
         ],
-        title: const Text('Check Out', style: TextStyle(color: Colors.black),),
+        title: const Text(
+          'Check Out',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Column(
         children: [
@@ -36,14 +45,13 @@ class CheckoutScreen extends StatelessWidget {
                       subtitle:
                           Text('${cartInstance.selectedProducts[index].price}'),
                       leading: CircleAvatar(
-                        backgroundImage: AssetImage(
-                            cartInstance.selectedProducts[index].image),
-                        backgroundColor:
-                            cartInstance.selectedProducts[index].color,
+                        backgroundImage: NetworkImage(
+                            productIn.productList[index].thumbnail),
                       ),
                       trailing: IconButton(
                         onPressed: () {
-                          cartInstance.delet(cartInstance.selectedProducts[index]);
+                          cartInstance
+                              .delet(cartInstance.selectedProducts[index]);
                         },
                         icon: const Icon(Icons.remove),
                       ),
@@ -56,7 +64,8 @@ class CheckoutScreen extends StatelessWidget {
           ElevatedButton(
             onPressed: () {},
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 77, 181, 129)),
+              backgroundColor: MaterialStateProperty.all(
+                  const Color.fromARGB(255, 77, 181, 129)),
               padding: MaterialStateProperty.all(
                 const EdgeInsets.all(10),
               ),

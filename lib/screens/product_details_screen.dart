@@ -2,16 +2,17 @@ import 'package:ecommerce_app/models/products.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecommerce_app/widgets/app_bar_components.dart';
-import 'package:provider/provider.dart';
 
-import '../models/products_model.dart';
-import '../services/product_api.dart';
-import '../viewModels/List_of_Products_model.dart';
+import '../models/product_data.dart';
 
 class ProductDetails extends StatefulWidget {
   final Product products;
-
-  const ProductDetails({super.key, required this.products});
+  final ProductsData productData;
+  const ProductDetails({
+    super.key,
+    required this.products,
+    required this.productData,
+  });
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -21,10 +22,9 @@ class _ProductDetailsState extends State<ProductDetails> {
   bool isShowMore = true;
   @override
   Widget build(BuildContext context) {
-    final ProductsListViewModel productIn =
-        Provider.of<ProductsListViewModel>(context);
-    final Productss productss = Productss(products: products);
-    final ProductApi productApi = Provider.of<ProductApi>(context);
+    // final ProductsListViewModel productIn =
+    //     Provider.of<ProductsListViewModel>(context);
+    // final ProductsData productData = Provider.of<ProductsData>(context);
 
     Size size = MediaQuery.of(context).size;
 
@@ -144,7 +144,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         Column(
                           children: [
                             Text(
-                              widget.products.description,
+                              widget.productData.description,
                               style: const TextStyle(
                                 fontSize: 20,
                               ),
@@ -179,7 +179,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                         ),
                         Text(
-                          widget.products.title,
+                          widget.productData.title,
                           style: const TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -196,7 +196,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 children: [
                                   const TextSpan(text: 'Price\n'),
                                   TextSpan(
-                                    text: '\$${widget.products.price}',
+                                    text: '\$${widget.productData.price}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium!
@@ -208,8 +208,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 ],
                               ),
                             ),
-                            Image.asset(
-                              widget.products.image,
+                            Image.network(
+                              widget.productData.thumbnail,
                               fit: BoxFit.fitWidth,
                               width: 250,
                             ),

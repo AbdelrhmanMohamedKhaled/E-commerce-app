@@ -1,10 +1,8 @@
 import 'package:ecommerce_app/models/products.dart';
 import 'package:ecommerce_app/screens/product_details_screen.dart';
-import 'package:ecommerce_app/services/product_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/products_model.dart';
 import '../provider/cart.dart';
 import '../viewModels/List_of_Products_model.dart';
 import 'drawer_components.dart';
@@ -31,8 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final ProductsListViewModel productIn =
         Provider.of<ProductsListViewModel>(context);
     final cartInstance = Provider.of<Cart>(context);
-    final ProductApi productApi = Provider.of<ProductApi>(context);
-    final Productss productss = Productss(products: products);
 
     return Scaffold(
       drawer: DrawerTab(),
@@ -64,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialPageRoute(
                   builder: (context) => ProductDetails(
                     products: products[index],
+                    productData: productIn.productList[index],
                   ),
                 ),
               );
@@ -73,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // backgroundColor: Colors.black38,
                 trailing: IconButton(
                   onPressed: () {
-                    cartInstance.add(products[index]);
+                    cartInstance.add(productIn.productList[index]);
                   },
                   icon: const Icon(Icons.add),
                   color: Colors.black,
@@ -107,71 +104,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       )),
-
-      // Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: GridView.builder(
-      // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      //   crossAxisCount: 2,
-      //   crossAxisSpacing: 20,
-      //   mainAxisSpacing: 20,
-      //   childAspectRatio: 1,
-      // ),
-      //     itemCount: por,
-      //     itemBuilder: (BuildContext context, int index) {
-      //       final product = productData[index];
-      //       return GestureDetector(
-      //         onTap: () {
-      //           Navigator.push(
-      //             context,
-      //             MaterialPageRoute(
-      //               builder: (context) => ProductDetails(
-      //                 products: products[index],
-      //               ),
-      //             ),
-      //           );
-      //         },
-      //         child: GridTile(
-      //           footer: GridTileBar(
-      //             // backgroundColor: Colors.black38,
-      //             trailing: IconButton(
-      //               onPressed: () {
-      //                 cartInstance.add(products[index]);
-      //               },
-      //               icon: const Icon(Icons.add),
-      //               color: Colors.black,
-      //             ),
-
-      //             leading: Text('\$${productData[index].price}'),
-      //             title: const Text(""),
-      //           ),
-      //           child: Stack(
-      //             children: [
-      //               Positioned(
-      //                 top: -3,
-      //                 bottom: -9,
-      //                 left: 0,
-      //                 right: 0,
-      //                 child: Padding(
-      //                   padding: const EdgeInsets.all(18),
-      //                   child: Container(
-      //                     padding: const EdgeInsets.all(15),
-      //                     decoration: BoxDecoration(
-      //                       borderRadius: BorderRadius.circular(18),
-      //                       color: products[index].color,
-      //                     ),
-      //                     child: ClipRRect(
-      //                         child: Image.asset(products[index].image)),
-      //                   ),
-      //                 ),
-      //               ),
-      //             ],
-      //           ),
-      //         ),
-      //       );
-      //     },
-      //   ),
-      // ),
     );
   }
 }
