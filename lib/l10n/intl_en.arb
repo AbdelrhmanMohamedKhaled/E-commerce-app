@@ -1,0 +1,16 @@
+{
+    "title" : "Welcome Back!",
+    "title2" : "JOINUS NOW",
+    "Name" : "Enter Your Name",
+    "Email" : "Enter Your Email",
+    "password" : "Enter Your password",
+    "Login" : "Login",
+    "signup" : "signup",
+    "create" : "Already have an account",
+    "create2" : "Dont have an account",
+    "Product1": "iPhone9",
+    "pdescription": "An apple mobile which is nothing like apple",
+    "New" : "New",
+    "ProductDetails" : "ProductDetails"
+
+}

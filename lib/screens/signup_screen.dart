@@ -3,6 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../generated/l10n.dart';
+import '../main.dart';
+import '../models/language_model.dart';
+
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
@@ -15,10 +19,60 @@ class _SignupScreenState extends State<SignupScreen> {
 
   late String email;
   late String password;
+  void _ChangeLanguage(Language language) {
+    Locale temp;
+    switch (language.languageCode) {
+      case 'en':
+        temp = Locale(language.languageCode);
+        break;
+      case 'ar':
+        temp = Locale(language.languageCode);
+      default:
+        temp = Locale(language.languageCode, 'en');
+    }
+    MyApp.setLocale(context, temp);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: DropdownButton(
+              underline: const SizedBox(),
+              icon: const Icon(
+                Icons.language,
+                color: Colors.black54,
+                size: 30,
+              ),
+              onChanged: (Language? language) {
+                _ChangeLanguage(language!);
+              },
+              items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+                      value: lang,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            lang.flag,
+                            style: const TextStyle(fontSize: 25),
+                          ),
+                          Text(
+                            lang.name,
+                            style: const TextStyle(fontSize: 17),
+                          ),
+                        ],
+                      )))
+                  .toList(),
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
@@ -27,7 +81,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Column(
               children: [
                 Text(
-                  'JoinUs Now'.toUpperCase(),
+                  S.of(context).title2.toUpperCase(),
                   style: const TextStyle(fontSize: 20),
                 ),
                 const SizedBox(
@@ -57,7 +111,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide.none,
                         ),
-                        hintText: 'Enter Your Name'),
+                        hintText: S.of(context).Name),
                   ),
                 ),
                 const SizedBox(
@@ -83,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide.none,
                         ),
-                        hintText: 'Enter Your Email'),
+                        hintText: S.of(context).Email),
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -107,7 +161,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide.none,
                         ),
-                        hintText: 'Enter Your Password'),
+                        hintText: S.of(context).password),
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -138,7 +192,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     }
                   },
                   child: Text(
-                    'signup'.toUpperCase(),
+                    S.of(context).signup.toUpperCase(),
                     style: const TextStyle(fontSize: 20),
                   ),
                 ),
@@ -148,10 +202,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Already Have An Account! ',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    Text(
+                      S.of(context).create,
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w500),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pushReplacement(
@@ -161,7 +215,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       child: Text(
-                        ' login'.toUpperCase(),
+                        S.of(context).Login.toUpperCase(),
                         style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),

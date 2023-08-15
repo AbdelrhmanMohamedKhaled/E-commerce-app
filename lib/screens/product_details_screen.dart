@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ecommerce_app/widgets/app_bar_components.dart';
 
+import '../generated/l10n.dart';
 import '../models/product_data.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -33,9 +34,9 @@ class _ProductDetailsState extends State<ProductDetails> {
       appBar: AppBar(
         backgroundColor: widget.products.color,
         elevation: 0,
-        title: const Text(
-          'Product Details',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          S.of(context).ProductDetails,
+          style: const TextStyle(color: Colors.white),
         ),
         actions: const [
           AppBarComponents(),
@@ -71,7 +72,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               color: const Color.fromARGB(255, 229, 147, 147),
                               padding: const EdgeInsets.all(5),
                               child: Text(
-                                'new'.toUpperCase(),
+                                S.of(context).New.toUpperCase(),
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -144,7 +145,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         Column(
                           children: [
                             Text(
-                              widget.productData.description,
+                              S.of(context).pdescription,
                               style: const TextStyle(
                                 fontSize: 20,
                               ),
@@ -171,15 +172,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Aristocratic Hand Bag',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
-                        ),
                         Text(
-                          widget.productData.title,
+                          S.of(context).Product1,
                           style: const TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
