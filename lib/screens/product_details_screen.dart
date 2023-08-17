@@ -3,10 +3,17 @@ import 'package:flutter/material.dart';
 
 import 'package:ecommerce_app/widgets/app_bar_components.dart';
 
+import '../generated/l10n.dart';
+import '../models/product_data.dart';
+
 class ProductDetails extends StatefulWidget {
   final Product products;
-
-  const ProductDetails({super.key, required this.products});
+  final ProductsData productData;
+  const ProductDetails({
+    super.key,
+    required this.products,
+    required this.productData,
+  });
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -16,6 +23,10 @@ class _ProductDetailsState extends State<ProductDetails> {
   bool isShowMore = true;
   @override
   Widget build(BuildContext context) {
+    // final ProductsListViewModel productIn =
+    //     Provider.of<ProductsListViewModel>(context);
+    // final ProductsData productData = Provider.of<ProductsData>(context);
+
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -23,9 +34,9 @@ class _ProductDetailsState extends State<ProductDetails> {
       appBar: AppBar(
         backgroundColor: widget.products.color,
         elevation: 0,
-        title: const Text(
-          'Product Details',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          S.of(context).ProductDetails,
+          style: const TextStyle(color: Colors.white),
         ),
         actions: const [
           AppBarComponents(),
@@ -61,7 +72,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               color: const Color.fromARGB(255, 229, 147, 147),
                               padding: const EdgeInsets.all(5),
                               child: Text(
-                                'new'.toUpperCase(),
+                                S.of(context).New.toUpperCase(),
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -134,7 +145,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         Column(
                           children: [
                             Text(
-                              widget.products.description,
+                              S.of(context).pdescription,
                               style: const TextStyle(
                                 fontSize: 20,
                               ),
@@ -161,15 +172,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Aristocratic Hand Bag',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
-                        ),
                         Text(
-                          widget.products.title,
+                          S.of(context).Product1,
                           style: const TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -186,7 +190,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 children: [
                                   const TextSpan(text: 'Price\n'),
                                   TextSpan(
-                                    text: '\$${widget.products.price}',
+                                    text: '\$${widget.productData.price}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium!
@@ -198,8 +202,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 ],
                               ),
                             ),
-                            Image.asset(
-                              widget.products.image,
+                            Image.network(
+                              widget.productData.thumbnail,
                               fit: BoxFit.fitWidth,
                               width: 250,
                             ),

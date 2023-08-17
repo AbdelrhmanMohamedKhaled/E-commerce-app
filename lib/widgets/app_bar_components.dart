@@ -11,20 +11,23 @@ class AppBarComponents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartInstance = Provider.of<Cart>(context);
     return Row(
       children: [
         Stack(
           children: [
-            Container(
-              padding: const EdgeInsets.all(5),
-              decoration: const BoxDecoration(
-                  color: Color.fromARGB(211, 164, 255, 193),
-                  shape: BoxShape.circle),
-              child: Text(
-                '${cartInstance.selectedProducts.length}',
-                style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-              ),
+            Consumer<Cart>(
+              builder: (context, cart, child) {
+                return Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(211, 164, 255, 193),
+                      shape: BoxShape.circle),
+                  child: Text(
+                    '${cart.selectedProducts.length}',
+                    style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                  ),
+                );
+              },
             ),
             IconButton(
               onPressed: () {
@@ -42,12 +45,16 @@ class AppBarComponents extends StatelessWidget {
             ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: Text(
-            '\$${cartInstance.price}',
-            style: const TextStyle(fontSize: 18, color: Colors.black),
-          ),
+        Consumer<Cart>(
+          builder: (context, cart, child) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Text(
+                '\$${cart.price}',
+                style: const TextStyle(fontSize: 18, color: Colors.black),
+              ),
+            );
+          },
         ),
       ],
     );

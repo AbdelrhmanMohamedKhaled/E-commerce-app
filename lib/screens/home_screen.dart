@@ -1,46 +1,57 @@
-
+import 'package:ecommerce_app/models/products.dart';
+import 'package:ecommerce_app/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/products.dart';
+import '../generated/l10n.dart';
+import '../provider/cart.dart';
+import '../viewModels/List_of_Products_model.dart';
 import 'drawer_components.dart';
-import 'package:ecommerce_app/provider/cart.dart';
-import 'package:ecommerce_app/screens/product_details_screen.dart';
 import 'package:ecommerce_app/widgets/app_bar_components.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
   });
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<ProductsListViewModel>(context).fetchProducts();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final cartInstance = Provider.of<Cart>(context);
     return Scaffold(
       drawer: DrawerTab(),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Home',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          S.of(context).Home,
+          style: const TextStyle(color: Colors.black),
         ),
         actions: const [
           AppBarComponents(),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
+      body: Consumer<ProductsListViewModel>(
+          builder: (context, productData, child) {
+        return GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 20,
             mainAxisSpacing: 20,
             childAspectRatio: 1,
           ),
-          itemCount: products.length,
-          itemBuilder: (BuildContext context, int index) {
+          itemCount: productData.productList.length,
+          itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -48,23 +59,27 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => ProductDetails(
                       products: products[index],
+                      productData: productData.productList[index],
                     ),
                   ),
                 );
               },
               child: GridTile(
-                footer: GridTileBar(
-                  // backgroundColor: Colors.black38,
-                  trailing: IconButton(
-                    onPressed: () {
-                      cartInstance.add(products[index]);
-                    },
-                    icon: const Icon(Icons.add),
-                    color: Colors.black,
-                  ),
-
-                  leading: Text('\$${products[index].price}'),
-                  title: const Text(""),
+                footer: Consumer<Cart>(
+                  builder: (context, cart, child) {
+                    return GridTileBar(
+                      trailing: IconButton(
+                        onPressed: () {
+                          cart.add(productData.productList[index]);
+                        },
+                        icon: const Icon(Icons.add),
+                        color: Colors.black,
+                      ),
+                      leading:
+                          Text('\$${productData.productList[index].price}'),
+                      title: const Text(""),
+                    );
+                  },
                 ),
                 child: Stack(
                   children: [
@@ -79,10 +94,10 @@ class HomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
-                            color: products[index].color,
                           ),
                           child: ClipRRect(
-                              child: Image.asset(products[index].image)),
+                              child: Image.network(
+                                  productData.productList[index].thumbnail)),
                         ),
                       ),
                     ),
@@ -91,8 +106,8 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           },
-        ),
-      ),
+        );
+      }),
     );
   }
 }
