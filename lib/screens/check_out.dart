@@ -4,19 +4,11 @@ import 'package:provider/provider.dart';
 import '../provider/cart.dart';
 import 'package:ecommerce_app/widgets/app_bar_components.dart';
 
-import '../viewModels/List_of_Products_model.dart';
-
 class CheckoutScreen extends StatelessWidget {
-  const CheckoutScreen({
-    super.key,
-  });
+  const CheckoutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cartInstance = Provider.of<Cart>(context);
-    final ProductsListViewModel productIn =
-        Provider.of<ProductsListViewModel>(context);
-
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
@@ -35,30 +27,30 @@ class CheckoutScreen extends StatelessWidget {
           SingleChildScrollView(
             child: SizedBox(
               height: 550,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: cartInstance.selectedProducts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(cartInstance.selectedProducts[index].title),
-                      subtitle:
-                          Text('${cartInstance.selectedProducts[index].price}'),
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            productIn.productList[index].thumbnail),
+              child: Consumer<Cart>(builder: (context, cart, child) {
+                return ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: cart.selectedProducts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      child: ListTile(
+                        title: Text(cart.selectedProducts[index].title),
+                        subtitle: Text('${cart.selectedProducts[index].price}'),
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              cart.selectedProducts[index].thumbnail),
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {
+                            cart.delet(cart.selectedProducts[index]);
+                          },
+                          icon: const Icon(Icons.remove),
+                        ),
                       ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          cartInstance
-                              .delet(cartInstance.selectedProducts[index]);
-                        },
-                        icon: const Icon(Icons.remove),
-                      ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                );
+              }),
             ),
           ),
           ElevatedButton(
@@ -75,13 +67,15 @@ class CheckoutScreen extends StatelessWidget {
                 ),
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Pay \$${cartInstance.price}',
-                style: const TextStyle(fontSize: 19),
-              ),
-            ),
+            child: Consumer<Cart>(builder: (context, cart, child) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Pay \$${cart.price}',
+                  style: const TextStyle(fontSize: 19),
+                ),
+              );
+            }),
           ),
         ],
       ),

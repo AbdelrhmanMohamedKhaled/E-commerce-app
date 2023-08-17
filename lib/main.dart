@@ -1,5 +1,5 @@
 import 'package:ecommerce_app/provider/cart.dart';
-import 'package:ecommerce_app/screens/login_screen.dart';
+import 'package:ecommerce_app/screens/home_screen.dart';
 import 'package:ecommerce_app/services/product_api.dart';
 import 'package:ecommerce_app/viewModels/List_of_Products_model.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        home: const LoginScreen(),
+        home: const HomeScreen(),
         // initialRoute: '/',
         // routes: {
         //   '/': (context) => const LoginScreen(),
